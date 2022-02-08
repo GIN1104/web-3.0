@@ -48,7 +48,7 @@ const TransactionCard =({ addressTo, addressFrom, timestamp, message, keyword, a
 
 const Transactions = () => {
 
-    const { currentAccount } = useContext( TransactionContext);
+    const { currentAccount,transactions } = useContext( TransactionContext);
  
     return (
         <div className="flex w-full justify-center itmes-center 2xl:px-20 gradient-bg-transactions">
@@ -60,8 +60,8 @@ const Transactions = () => {
             )
             }
             <div className="flex flex-wrap justify-center itmes-center mt-10 ">
-                {dummyData.reverse().map(( transaction, i) => (
-                    <TransactionCard key={transaction.id + i } {...transaction}/>
+                { [...dummyData, ...transactions].reverse().map(( transaction, i) => (
+                    <TransactionCard key={ i } {...transaction}/>
                 ))
 
                 }

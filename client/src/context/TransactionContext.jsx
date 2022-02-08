@@ -29,20 +29,22 @@ export const TransactionProvider = ({ children }) => {
 
     const getAllTransactions = async () => {
         try {
+            console.log(ethereum)
             if(!ethereum) return alert("Please install Metamask");
             const transactionContract = getEthereumContract();
-
             const availableTransactions = await transactionContract.getAllTransactions();
+            console.log(availableTransactions)
 
-            const structuredTransactions = availableTransactions.map((transaction) => ({
+            const structuredTransactions = availableTransactions.map(
+                (transaction) => ({
                 addressTo: transaction.receiver,
                 addressFrom: transaction.sender,
-                timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
+                 timestamp: new Date(Date.now() - Math.floor(Math.random() * 100001)).toLocaleString() ,
                 message: transaction.message,
                 keyword: transaction.keyword,
-                amount: parseInt(transaction.amount._hex)*(10 ** 18)
+                amount: parseInt(transaction.amount._hex)/(10 ** 18)
             } ))
-            console.log(structuredTransactions);
+            console.log(structuredTransactions)
             setTransactions(structuredTransactions);
 
         } catch (error) {
@@ -118,7 +120,7 @@ export const TransactionProvider = ({ children }) => {
                 }]
             });  
 
-    const transactionHash = await transactionContract.addToBlockchain(addressTo, parsedAmount,  message, keyword);
+    const transactionHash = await transactionContract.addToBlockchain(addressTo, parsedAmount,  message,  keyword);
 
     setIsLoading(true);
     console.log(`Loading - ${transactionHash.hash}`);
@@ -129,6 +131,8 @@ export const TransactionProvider = ({ children }) => {
     const transactionCount = await transactionContract.getTransactionCount();
 
     setTransactionCount(transactionCount.toNumber());
+    window.reload();
+
         } catch (error) {
             console.log(error);
 
@@ -142,7 +146,7 @@ export const TransactionProvider = ({ children }) => {
     }, [])
 
     return(
-        <TransactionContext.Provider value={{ connectWallet, currentAccount, formData,  handleChange, sendTransaction  }}>
+        <TransactionContext.Provider value={{ connectWallet, currentAccount, formData,  handleChange, sendTransaction, transactions, isLoading  }}>
             { children }
         </TransactionContext.Provider>
     )
