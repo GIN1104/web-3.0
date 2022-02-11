@@ -39,7 +39,7 @@ export const TransactionProvider = ({ children }) => {
                 (transaction) => ({
                 addressTo: transaction.receiver,
                 addressFrom: transaction.sender,
-                 timestamp: new Date(Date.now() - Math.floor(Math.random() * 100001)).toLocaleString() ,
+                timestamp: new Date(Date.now() - Math.floor(Math.random() * 100001)).toLocaleString() ,
                 message: transaction.message,
                 keyword: transaction.keyword,
                 amount: parseInt(transaction.amount._hex)/(10 ** 18)
